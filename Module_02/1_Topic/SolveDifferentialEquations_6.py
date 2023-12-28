@@ -8,8 +8,7 @@ def model(z,t,u):
     y = z[1]
     dxdt = (-x + u)/2.0
     dydt = (-y + x)/5.0
-    dzdt = [dxdt,dydt]
-    return dzdt
+    return [dxdt,dydt]
 
 # initial condition
 z0 = [0,0]

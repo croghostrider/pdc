@@ -17,8 +17,7 @@ def tank(levels,t,pump,valve):
         dhdt1 = 0
     if h2>=1.0 and dhdt2>0.0:
         dhdt2 = 0
-    dhdt = [dhdt1,dhdt2]
-    return dhdt
+    return [dhdt1,dhdt2]
 
 # Initial conditions (levels)
 h0 = [0.0,0.0]
@@ -32,7 +31,7 @@ pump = np.zeros((tf+1))
 pump[10:] = 0.2
 # valve = 0, directly into top tank
 # valve = 1, directly into bottom tank
-valve = 0.0 
+valve = 0.0
 # Record the solution
 y = np.empty((tf+1,2))
 y[0,:] = h0
@@ -56,14 +55,14 @@ for i in range(tf):
 
     # plot results
     if animate:
-        plt.clf()    
+        plt.clf()
         plt.subplot(2,1,1)
-        plt.plot(t[0:i+1],y[0:i+1,0],'b-',label='height 1')
-        plt.plot(t[0:i+1],y[0:i+1,1],'r--',label='height 2')
+        plt.plot(t[:i+1], y[0:i+1,0], 'b-', label='height 1')
+        plt.plot(t[:i+1], y[0:i+1,1], 'r--', label='height 2')
         plt.ylabel('Height (m)')
         plt.legend(loc='best')
         plt.subplot(2,1,2)
-        plt.plot(t[0:i+1],pump[0:i+1],'k-',label='pump')
+        plt.plot(t[:i+1], pump[:i+1], 'k-', label='pump')
         plt.legend(loc='best')
         plt.ylabel('Pump')
         plt.xlabel('Time (sec)')

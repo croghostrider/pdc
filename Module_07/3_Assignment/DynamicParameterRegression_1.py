@@ -12,9 +12,9 @@ TC = 'Temperature (degC)'
 
 # print temperature values
 print(TC)
-print(data[TC][0:5])
-print('min: '+str(min(data[TC])))
-print('max: '+str(max(data[TC])))
+print(data[TC][:5])
+print(f'min: {str(min(data[TC]))}')
+print(f'max: {str(max(data[TC]))}')
 
 # plot data with pyplot
 plt.figure()

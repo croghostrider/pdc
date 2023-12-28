@@ -8,8 +8,7 @@ def model(z,t,u):
     x2 = z[1]
     dx1dt = -x1**2 + np.sqrt(u)
     dx2dt = -4.0*(x2-2.0) + (1.0/8.0)*(u-16.0)
-    dzdt = [dx1dt,dx2dt]
-    return dzdt
+    return [dx1dt,dx2dt]
 
 # steady state conditions
 x_ss = 2.0

@@ -30,16 +30,11 @@ def fopdt(y,t,uf,Km,taum,thetam):
     #  thetam = model time constant
     # time-shift u
     try:
-        if (t-thetam) <= 0:
-            um = uf(0.0)
-        else:
-            um = uf(t-thetam)
+        um = uf(0.0) if (t-thetam) <= 0 else uf(t-thetam)
     except:
         #print('Error with time extrapolation: ' + str(t))
         um = u0
-    # calculate derivative
-    dydt = (-(y-yp0) + Km * (um-u0))/taum
-    return dydt
+    return (-(y-yp0) + Km * (um-u0))/taum
 
 # simulate FOPDT model with x=[Km,taum,thetam]
 def sim_model(x):
@@ -76,7 +71,7 @@ x0[1] = 120.0 # taum
 x0[2] = 5.0 # thetam
 
 # show initial objective
-print('Initial SSE Objective: ' + str(objective(x0)))
+print(f'Initial SSE Objective: {str(objective(x0))}')
 
 # optimize Km, taum, thetam
 #solution = minimize(objective,x0)
@@ -87,4 +82,4 @@ solution = minimize(objective,x0,bounds=bnds,method='SLSQP')
 x = solution.x
 
 # show final objective
-print('Final SSE Objective: ' + str(objective(x)))
+print(f'Final SSE Objective: {str(objective(x))}')

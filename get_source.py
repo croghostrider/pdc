@@ -38,53 +38,43 @@ hdr = ['Topic','Quiz','Assignment','TCLab']
 for i in range(len(tbl)):
     # append when previous row is the same number
     # when multiple topics or assignments for the same class
-    if tbl['Class'][i]==prev:
-        wmode = 'a'
-    else:
-        wmode = 'w'
+    wmode = 'a' if tbl['Class'][i]==prev else 'w'
     prev=tbl['Class'][i]
     k = int(tbl['Class'][i])
-    if k<=9:
-        mod = 'Module_0' + str(k)
-    else:
-        mod = 'Module_' + str(k)
+    mod = f'Module_0{k}' if k<=9 else f'Module_{k}'
     try:
         os.mkdir(mod)
     except:
         pass
     os.chdir(mod)
 
-    f = open('README.md',wmode)
-    f.write('## Module ' + str(tbl['Class'][i]) + ' in Process Dynamics and Control\n')
-    f.write('- [Course Overview](https://apmonitor.com/pdc)\n')
-    f.write('- [Course Schedule](https://apmonitor.com/pdc/index.php/Main/CourseSchedule)\n')    
+    with open('README.md',wmode) as f:
+        f.write('## Module ' + str(tbl['Class'][i]) + ' in Process Dynamics and Control\n')
+        f.write('- [Course Overview](https://apmonitor.com/pdc)\n')
+        f.write('- [Course Schedule](https://apmonitor.com/pdc/index.php/Main/CourseSchedule)\n')    
 
-    for j,x in enumerate(hdr):
-        d = str(j+1) + '_' + x
-        try:
-            os.mkdir(d)
-        except:
-            pass
-        os.chdir(d)
-        name = tbl[x][i]
-        # check for NaN (empty entry)
-        if name!=name:
+        for j,x in enumerate(hdr):
+            d = f'{str(j + 1)}_' + x
+            try:
+                os.mkdir(d)
+            except:
+                pass
+            os.chdir(d)
+            name = tbl[x][i]
+            # check for NaN (empty entry)
+            if name!=name:
+                os.chdir('../')
+                continue
+            title,desc,n = get_file(name)
+            with open('README.md',wmode) as g:
+                url = url_base + name
+                g.write('### ['+title+']('+url+')\n')
+                g.write(f'- Scripts Located: {str(n)}' + '\n')
+                g.write('- Page Description: '+desc+'\n')
             os.chdir('../')
-            continue
-        title,desc,n = get_file(name)
-        g = open('README.md',wmode)
-        url = url_base + name
-        g.write('### ['+title+']('+url+')\n')
-        g.write('- Scripts Located: ' + str(n)+'\n')
-        g.write('- Page Description: '+desc+'\n')
-        g.close()
-        
-        os.chdir('../')
-        f.write('### ' + x + '\n')
-        url = url_base + tbl[x][i]
-        f.write('- ['+title+']('+url+'): '+str(n)+' scripts. Description: '+desc+'\n')
-    f.close()
-
+            f.write('### ' + x + '\n')
+            url = url_base + tbl[x][i]
+            f.write('- ['+title+']('+url+'): '+str(n)+' scripts. Description: '+desc+'\n')
     os.chdir('../')
     
 

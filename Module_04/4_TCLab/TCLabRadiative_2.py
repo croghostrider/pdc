@@ -11,7 +11,7 @@ try:
     lab = tclab.TCLab()
     T1 = [lab.T1]
     lab.Q1(50)
-    for i in range(n):
+    for _ in range(n):
         time.sleep(1)
         print(lab.T1)
         T1.append(lab.T1)
@@ -28,13 +28,12 @@ alpha = 0.01
 eps = 0.9
 sigma = 5.67e-8
 Ta = 23
-Cp = 500 
+Cp = 500
 m = 0.004
 TaK = Ta + 273.15
 def labsim(TC,t):
     TK = TC + 273.15
-    dTCdt = (U*A*(Ta-TC) + sigma*eps*A*(TaK**4-TK**4) + alpha*50)/(m*Cp)
-    return dTCdt
+    return (U*A*(Ta-TC) + sigma*eps*A*(TaK**4-TK**4) + alpha*50)/(m*Cp)
 
 tm = np.linspace(0,n,n+1) # Time values
 Tsim = odeint(labsim,23,tm)
@@ -57,7 +56,7 @@ plt.subplot(2,1,2)
 plt.plot(tm,conv,'g:',label='Convection')
 plt.plot(tm,rad,'r--',label='Radiation')
 plt.plot(tm,loss,'k-',label='Total Lost')
-plt.text(150,-0.1,'Heater input = '+str(gain)+' W')
+plt.text(150, -0.1, f'Heater input = {str(gain)} W')
 plt.ylabel(r'Heat Loss (W)')
 plt.legend(loc=3)
 plt.xlabel('Time (sec)')

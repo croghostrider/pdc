@@ -14,15 +14,10 @@ def fopdt(y,t,uf,Km,taum,thetam):
     #  thetam = model time constant
     # time-shift u
     try:
-        if (t-thetam) <= 0:
-            um = uf(0.0)
-        else:
-            um = uf(t-thetam)
+        um = uf(0.0) if (t-thetam) <= 0 else uf(t-thetam)
     except:
         um = 0
-    # calculate derivative
-    dydt = (-y + Km * um)/taum
-    return dydt
+    return (-y + Km * um)/taum
 
 # specify number of steps
 ns = 150

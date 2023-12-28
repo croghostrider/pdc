@@ -14,9 +14,7 @@ def vehicle(v,t,u,load):
     A = 5.0      # cross-sectional area (m^2)
     Fp = 30      # thrust parameter (N/%pedal)
     m = 500      # vehicle mass (kg)
-    # calculate derivative of the velocity
-    dv_dt = (1.0/(m+load)) * (Fp*u - 0.5*rho*Cd*A*v**2)
-    return dv_dt
+    return (1.0/(m+load)) * (Fp*u - 0.5*rho*Cd*A*v**2)
 
 tf = 60.0                 # final time for simulation
 nsteps = 61               # number of time steps

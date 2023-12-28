@@ -137,26 +137,26 @@ for i in range(len(t)-1):
     plt.clf()
     # Plot the results
     plt.subplot(3,1,1)
-    plt.plot(t[0:i+1],u[0:i+1],'b--',linewidth=3)
+    plt.plot(t[:i+1], u[:i+1], 'b--', linewidth=3)
     plt.ylabel('Cooling T (K)')
     plt.legend(['Jacket Temperature'],loc='best')
 
     plt.subplot(3,1,2)
-    plt.plot(t[0:i+1],Ca[0:i+1],'r-',linewidth=3)
+    plt.plot(t[:i+1], Ca[:i+1], 'r-', linewidth=3)
     plt.ylabel('Ca (mol/L)')
     plt.legend(['Reactor Concentration'],loc='best')
 
     plt.subplot(3,1,3)
     plt.plot([t[0],t[i]],[400.0,400.0],'r-',linewidth=2)
-    plt.plot(t[0:i+1],T[0:i+1],'b.-',linewidth=3)
-    plt.plot(t[0:i+1],sp[0:i+1],'k:',linewidth=3)
+    plt.plot(t[:i+1], T[:i+1], 'b.-', linewidth=3)
+    plt.plot(t[:i+1], sp[:i+1], 'k:', linewidth=3)
     plt.ylabel('T (K)')
     plt.xlabel('Time (min)')
     plt.legend(['Upper Limit','Reactor Temperature','Set Point'],loc='best')
     plt.pause(0.001)
 
     if make_gif:
-        filename='./frames/frame_'+str(1000+i)+'.png'
+        filename = f'./frames/frame_{str(1000 + i)}.png'
         plt.savefig(filename)
         images.append(imageio.imread(filename))
 

@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 
 # function that returns dy/dt
 def model(y,t):
-    dydt = -y + 1.0
-    return dydt
+    return -y + 1.0
 
 # initial condition
 y0 = 0

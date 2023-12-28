@@ -14,10 +14,7 @@ class model(object):
     thetap = 0.0
 
 def process(y,t,u,Kp,taup):
-    # Kp = process gain
-    # taup = process time constant
-    dydt = -y/taup + Kp/taup * u
-    return dydt
+    return -y/taup + Kp/taup * u
 
 def calc_response(t,m):
     # t = time points

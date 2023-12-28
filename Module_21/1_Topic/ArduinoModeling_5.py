@@ -26,11 +26,9 @@ def heat(x,t,Q):
     # Temperature State 
     T = x[0]
 
-    # Nonlinear Energy Balance
-    dTdt = (1.0/(m*Cp))*(U*A*(Ta-T) \
-            + eps * sigma * A * (Ta**4 - T**4) \
-            + alpha*Q)
-    return dTdt
+    return (1.0 / (m * Cp)) * (
+        U * A * (Ta - T) + eps * sigma * A * (Ta**4 - T**4) + alpha * Q
+    )
 
 # save txt file
 def save_txt(t,u1,u2,y1,y2,sp1,sp2):
@@ -93,9 +91,9 @@ plt.show()
 start_time = time.time()
 prev_time = start_time
 try:
+    # Sleep time
+    sleep_max = 1.0
     for i in range(1,loops):
-        # Sleep time
-        sleep_max = 1.0
         sleep = sleep_max - (time.time() - prev_time)
         if sleep>=0.01:
             time.sleep(sleep-0.01)
@@ -139,22 +137,22 @@ try:
         plt.clf()
         ax=plt.subplot(3,1,1)
         ax.grid()
-        plt.plot(tm[0:i],T1[0:i],'ro',label=r'$T_1$ measured')
-        plt.plot(tm[0:i],Tp[0:i],'k-',label=r'$T_1$ energy balance')
-        plt.plot(tm[0:i],Tpl[0:i],'g:',label=r'$T_1$ FOPDT')
-        plt.plot(tm[0:i],T2[0:i],'bx',label=r'$T_2$ measured')
+        plt.plot(tm[:i], T1[:i], 'ro', label=r'$T_1$ measured')
+        plt.plot(tm[:i], Tp[:i], 'k-', label=r'$T_1$ energy balance')
+        plt.plot(tm[:i], Tpl[:i], 'g:', label=r'$T_1$ FOPDT')
+        plt.plot(tm[:i], T2[:i], 'bx', label=r'$T_2$ measured')
         plt.ylabel('Temperature (degC)')
         plt.legend(loc=2)
         ax=plt.subplot(3,1,2)
         ax.grid()
-        plt.plot(tm[0:i],error_eb[0:i],'k-',label='Energy Balance')
-        plt.plot(tm[0:i],error_fopdt[0:i],'g:',label='Linear')
+        plt.plot(tm[:i], error_eb[:i], 'k-', label='Energy Balance')
+        plt.plot(tm[:i], error_fopdt[:i], 'g:', label='Linear')
         plt.ylabel('Cumulative Error')
         plt.legend(loc='best')
         ax=plt.subplot(3,1,3)
         ax.grid()
-        plt.plot(tm[0:i],Q1[0:i],'r-',label=r'$Q_1$')
-        plt.plot(tm[0:i],Q2[0:i],'b:',label=r'$Q_2$')
+        plt.plot(tm[:i], Q1[:i], 'r-', label=r'$Q_1$')
+        plt.plot(tm[:i], Q2[:i], 'b:', label=r'$Q_2$')
         plt.ylabel('Heaters')
         plt.xlabel('Time (sec)')
         plt.legend(loc='best')
@@ -165,27 +163,25 @@ try:
     a.Q1(0)
     a.Q2(0)
     # Save text file
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     # Save figure
     plt.savefig('test_Models.png')
 
-# Allow user to end loop with Ctrl-C           
 except KeyboardInterrupt:
     # Disconnect from Arduino
     a.Q1(0)
     a.Q2(0)
     print('Shutting down')
     a.close()
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     plt.savefig('test_Models.png')
 
-# Make sure serial connection still closes when there's an error
 except:           
     # Disconnect from Arduino
     a.Q1(0)
     a.Q2(0)
     print('Error: Shutting down')
     a.close()
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     plt.savefig('test_Models.png')
     raise

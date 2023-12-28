@@ -31,8 +31,7 @@ def tank(levels,t,pump,valve):
         dhdt1 = 0
     if h2>=1.0 and dhdt2>0.0:
         dhdt2 = 0
-    dhdt = [dhdt1,dhdt2]
-    return dhdt
+    return [dhdt1,dhdt2]
 
 # Initial conditions (levels)
 h0 = [0.0,0.0]
@@ -45,7 +44,7 @@ pump = np.zeros((tf+1))
 
 # valve = 0, directly into top tank
 # valve = 1, directly into bottom tank
-valve = 0.0 
+valve = 0.0
 # Record the solution
 y = np.empty((tf+1,2))
 y[0,:] = h0
@@ -94,24 +93,24 @@ for i in range(tf):
     h0 = h[-1,:]
 
     # plot results
-    plt.clf()    
+    plt.clf()
     plt.subplot(3,1,1)
-    plt.plot(t[0:i],y[0:i,0],'b-',label=r'$h_1$ PV')
+    plt.plot(t[:i], y[0:i,0], 'b-', label=r'$h_1$ PV')
     plt.ylabel('Height (m)')
     plt.legend(loc='best')
     plt.subplot(3,1,2)
-    plt.plot(t[0:i],y[0:i,1],'r--',label=r'$h_2$ PV')
-    plt.plot(t[0:i],sp[0:i],'k:',label=r'$h_2$ SP')        
+    plt.plot(t[:i], y[0:i,1], 'r--', label=r'$h_2$ PV')
+    plt.plot(t[:i], sp[:i], 'k:', label=r'$h_2$ SP')
     plt.ylabel('Height (m)')
     plt.legend(loc='best')
     plt.subplot(3,1,3)
-    plt.plot(t[0:i],pump[0:i],'k-',label='pump')
+    plt.plot(t[:i], pump[:i], 'k-', label='pump')
     plt.legend(loc='best')
     plt.ylabel('Pump')
     plt.xlabel('Time (sec)')
     plt.pause(0.01)
     if make_gif:
-        filename='./frames/frame_'+str(1000+i)+'.png'
+        filename = f'./frames/frame_{str(1000 + i)}.png'
         plt.savefig(filename)
         images.append(imageio.imread(filename))
 

@@ -6,10 +6,7 @@ from scipy.integrate import odeint
 Kp = 3.0
 taup = 5.0
 def process(y,t,u,Kp,taup):
-    # Kp = process gain
-    # taup = process time constant
-    dydt = -y/taup + Kp/taup * u
-    return dydt
+    return -y/taup + Kp/taup * u
 
 # specify number of steps
 ns = 300

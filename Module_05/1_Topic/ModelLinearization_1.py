@@ -15,11 +15,9 @@ from scipy.misc import derivative
 u = 16.0
 x = 2.0
 def pd_x(x):
-    dxdt = -x**2 + np.sqrt(u)
-    return dxdt
+    return -x**2 + np.sqrt(u)
 def pd_u(u):
-    dxdt = -x**2 + np.sqrt(u)
-    return dxdt
+    return -x**2 + np.sqrt(u)
 
 print('Approximate Partial Derivatives')
 print(derivative(pd_x,x,dx=1e-4))

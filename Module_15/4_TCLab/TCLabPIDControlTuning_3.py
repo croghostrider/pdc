@@ -117,23 +117,20 @@ plt.ion()
 plt.show()
 
 try:
+    # Sleep time
+    sleep_max = 1.0
     for i in range(1,loops):
-        # Sleep time
-        sleep_max = 1.0
         sleep = sleep_max - (time.time() - prev_time) - dt_error
         if sleep>=1e-4:
             time.sleep(sleep-1e-4)
         else:
-            print('exceeded max cycle time by ' + str(abs(sleep)) + ' sec')
+            print(f'exceeded max cycle time by {str(abs(sleep))} sec')
             time.sleep(1e-4)
 
         # Record time and change in time
         t = time.time()
         dt = t - prev_time
-        if (sleep>=1e-4):
-            dt_error = dt-1.0+0.009
-        else:
-            dt_error = 0.0
+        dt_error = dt-1.0+0.009 if (sleep>=1e-4) else 0.0
         prev_time = t
         tm[i] = t - start_time
 
@@ -162,13 +159,13 @@ try:
         # Plot
         ax=plt.subplot(2,1,1)
         ax.grid()
-        plt.plot(tm[0:i],Tsp1[0:i],'k--',label=r'$T_1$ set point')
-        plt.plot(tm[0:i],T1[0:i],'r.',label=r'$T_1$ measured')
+        plt.plot(tm[:i], Tsp1[:i], 'k--', label=r'$T_1$ set point')
+        plt.plot(tm[:i], T1[:i], 'r.', label=r'$T_1$ measured')
         plt.ylabel(r'Temperature ($^oC$)')
         plt.legend(loc=4)
         ax=plt.subplot(2,1,2)
         ax.grid()
-        plt.plot(tm[0:i],Q1[0:i],'b-',label=r'$Q_1$')
+        plt.plot(tm[:i], Q1[:i], 'b-', label=r'$Q_1$')
         plt.ylabel('Heater (%)')
         plt.legend(loc=1)
         plt.xlabel('Time (sec)')
@@ -180,27 +177,25 @@ try:
     a.Q2(0)
     a.close()
     # Save text file
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     # Save figure
     plt.savefig('PID_Control.png')
 
-# Allow user to end loop with Ctrl-C           
 except KeyboardInterrupt:
     # Disconnect from Arduino
     a.Q1(0)
     a.Q2(0)
     print('Shutting down')
     a.close()
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     plt.savefig('PID_Control.png')
 
-# Make sure serial connection closes with an error
 except:           
     # Disconnect from Arduino
     a.Q1(0)
     a.Q2(0)
     print('Error: Shutting down')
     a.close()
-    save_txt(tm[0:i],Q1[0:i],Q2[0:i],T1[0:i],T2[0:i],Tsp1[0:i],Tsp2[0:i])
+    save_txt(tm[:i], Q1[:i], Q2[:i], T1[:i], T2[:i], Tsp1[:i], Tsp2[:i])
     plt.savefig('PID_Control.png')
     raise

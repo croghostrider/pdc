@@ -5,12 +5,8 @@ import matplotlib.pyplot as plt
 # function that returns dy/dt
 def model(y,t):
     # u steps from 0 to 2 at t=10
-    if t<10.0:
-        u = 0
-    else:
-        u = 2
-    dydt = (-y + u)/5.0
-    return dydt
+    u = 0 if t<10.0 else 2
+    return (-y + u)/5.0
 
 # initial condition
 y0 = 1

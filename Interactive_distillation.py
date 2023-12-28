@@ -400,14 +400,6 @@ class Window:
 
     def kk(self):
 
-##        #y=self.Y0.get()
-##        self.q_copy.set('%6.2f'%self.q_copy.get());self.V.set('%6.2f'%self.V_copy.get());self.Cp_copy.set('%8.4f'%self.Cp_copy.get())
-##        self.mdelH_copy.set('%6.2f'%self.mdelH_copy.get());self.rho_copy.set('%6.2f'%self.rho_copy.get());self.EoverR_copy.set('%6.2f'%self.EoverR_copy.get());self.ko_copy.set('%6.2f'%self.ko_copy.get());
-##        self.UA_copy.set('%6.2f'%self.UA_copy.get());self.Tf_copy.set('%6.2f'%self.Tf_copy.get());self.Caf_copy.set('%6.2f'%self.Caf_copy.get())
-##        self.Y12.set('%6.2f'%self.Y12.get());self.Y13.set('%6.2f'%self.Y13.get());self.Y14.set('%6.2f'%self.Y14.get());self.Y15.set('%6.2f'%self.Y15.get())
-##        self.P.set('%8.2f'%self.P.get());self.T.set('%8.2f'%self.T.get()) #;self.Y14.set('%6.2f'%self.Y14.get());self.Y15.set('%6.2f'%self.Y15.get())
-
-        pass
         return True
 
     # define CSTR model
@@ -553,7 +545,7 @@ class Window:
         # create linear interpolation of the u data versus time
         uf = interp1d(t,u1)
 
-        # define first-order plus dead-time approximation    
+        # define first-order plus dead-time approximation
         def fopdt(y,t,uf,Km,taum,thetam):
             # arguments
             #  y      = output
@@ -564,10 +556,7 @@ class Window:
             #  thetam = model Lag time constant
             # time-shift u
             try:
-                if (t-thetam) <= 0:
-                    um = uf(0.0)
-                else:
-                    um = uf(t-thetam)
+                um = uf(0.0) if (t-thetam) <= 0 else uf(t-thetam)
             except:
                 #print('Error with time extrapolation: ' + str(t))
                 um = u0
@@ -610,7 +599,7 @@ class Window:
         x0[2] = 0.0 # thetam
 
         # show initial objective
-        print('Initial SSE Objective: ' + str(objective(x0)))
+        print(f'Initial SSE Objective: {str(objective(x0))}')
 
         # optimize Km, taum, thetam
         # bounds on variables
@@ -619,26 +608,26 @@ class Window:
         x = solution.x
 
         # show final objective
-        print('Final SSE Objective: ' + str(objective(x)))
+        print(f'Final SSE Objective: {str(objective(x))}')
 
-        print('Kp: ' + str(x[0]))
-        print('taup: ' + str(x[1]))
-        print('thetap: ' + str(x[2]))
+        print(f'Kp: {str(x[0])}')
+        print(f'taup: {str(x[1])}')
+        print(f'thetap: {str(x[2])}')
         self.Kp_copy.set('%4.2f'%x[0])
         self.Tp_copy.set('%4.2f'%x[1])
         self.Lp_copy.set('%4.2f'%x[2])
 
         # design PI controller
 #       tauc = max(0.1*taup,0.8*thetap)
-        tauc = max(0.1*x[1],0.8*x[2])    
+        tauc = max(0.1*x[1],0.8*x[2])
         Kc = (1.0/x[0])*(x[1]/(x[2]+tauc))
         tauI = x[1]/8.0
         self.Kc_copy.set('%4.2f'%Kc)
         self.Ti_copy.set('%4.2f'%tauI)
         self.Td_copy.set(0.000012)
 
-        print('Kc: ' + str(Kc))
-        print('tauI: ' + str(tauI))
+        print(f'Kc: {str(Kc)}')
+        print(f'tauI: {str(tauI)}')
 
         # calculate model with updated parameters
         ym1 = sim_model(x0)

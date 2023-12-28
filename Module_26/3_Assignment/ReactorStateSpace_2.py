@@ -80,7 +80,7 @@ y0 = [Ca0,T0]
 
 # Feed Concentration (mol/L)
 Caf = np.ones(len(t))*1.0
-Caf[0:] = 0.9
+Caf[:] = 0.9
 
 # Storage for results
 Ca = np.ones(len(t))*Ca0

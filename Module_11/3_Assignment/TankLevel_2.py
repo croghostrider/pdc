@@ -10,9 +10,7 @@ animate=True # True / False
 def tank(Level,time,c,valve):
     rho = 1000.0 # water density (kg/m^3)
     A = 1.0      # tank area (m^2)
-    # calculate derivative of the Level
-    dLevel_dt = (c/(rho*A)) * valve
-    return dLevel_dt
+    return (c/(rho*A)) * valve
 
 # time span for the simulation for 10 sec, every 0.1 sec
 ts = np.linspace(0,10,101)
@@ -81,20 +79,20 @@ for i in range(100):
         # update plot
         plt.clf()
         plt.subplot(3,1,1)
-        plt.plot(ts[0:i+1],z[0:i+1],'r-',linewidth=3,label='level PV')
-        plt.plot(ts[0:i+1],sps[0:i+1],'k:',linewidth=3,label='level SP')
+        plt.plot(ts[:i+1], z[:i+1], 'r-', linewidth=3, label='level PV')
+        plt.plot(ts[:i+1], sps[:i+1], 'k:', linewidth=3, label='level SP')
         plt.ylabel('Tank Level')
         plt.legend(loc='best')
         plt.subplot(3,1,2)
-        plt.plot(ts[0:i+1],u[0:i+1],'b--',linewidth=3,label='valve')
-        plt.ylabel('Valve')    
+        plt.plot(ts[:i+1], u[:i+1], 'b--', linewidth=3, label='valve')
+        plt.ylabel('Valve')
         plt.legend(loc='best')
         plt.subplot(3,1,3)
-        plt.plot(ts[0:i+1],es[0:i+1],'g-',linewidth=3,label='error')
+        plt.plot(ts[:i+1], es[:i+1], 'g-', linewidth=3, label='error')
         plt.ylabel('Error = SP-PV')
         plt.xlabel('Time (sec)')
         plt.legend(loc='best')
-        filename='./frames/frame_'+str(1000+i)+'.png'
+        filename = f'./frames/frame_{str(1000 + i)}.png'
         plt.savefig(filename)
         if make_gif:
             images.append(imageio.imread(filename))
@@ -117,7 +115,5 @@ if not animate:
     plt.xlabel('Time (sec)')
     plt.legend(loc='best')
     plt.show()
-else:
-    # create animated GIF
-    if make_gif:
-        imageio.mimsave('animate.gif', images)
+elif make_gif:
+    imageio.mimsave('animate.gif', images)

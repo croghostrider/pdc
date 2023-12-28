@@ -17,11 +17,9 @@ def heat(x,t,Q):
     # Temperature State 
     T = x[0]
 
-    # Nonlinear Energy Balance
-    dTdt = (1.0/(m*Cp))*(U*A*(Ta-T) \
-            + eps * sigma * A * (Ta**4 - T**4) \
-            + alpha*Q)
-    return dTdt
+    return (1.0 / (m * Cp)) * (
+        U * A * (Ta - T) + eps * sigma * A * (Ta**4 - T**4) + alpha * Q
+    )
 
 Q = 100.0 # Percent Heater (0-100%)
 T0 = 23.0 + 273.15 # Initial temperature

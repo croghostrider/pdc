@@ -11,7 +11,7 @@ lab = tclab.TCLab()
 T1 = [lab.T1]
 T2 = [lab.T2]
 lab.Q2(100)
-for i in range(n):
+for _ in range(n):
     time.sleep(1)
     print(lab.T1,lab.T2)
     T1.append(lab.T1)
@@ -25,7 +25,7 @@ Kd = (T1[-1]-T1[0]) / (T2[-1]-T2[0])
 plt.figure(1)
 plt.plot(tm/60.0,T1,'r.',label=r'Measured $T_1$')
 plt.plot(tm/60.0,T2,'b.',label=r'Measured $T_2$')
-plt.text(3,40,'Disturbance Gain (Kd): '+str(round(Kd,2)))
+plt.text(3, 40, f'Disturbance Gain (Kd): {str(round(Kd, 2))}')
 plt.ylabel(r'Temperature ($^o$C)')
 plt.xlabel('Time (min)')
 plt.legend()

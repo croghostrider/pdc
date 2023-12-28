@@ -6,9 +6,7 @@ from scipy.integrate import odeint
 def tank(Level,time,c,valve):
     rho = 1000.0 # water density (kg/m^3)
     A = 1.0      # tank area (m^2)
-    # calculate derivative of the Level
-    dLevel_dt = (c/(rho*A)) * valve
-    return dLevel_dt
+    return (c/(rho*A)) * valve
 
 # time span for the simulation for 10 sec, every 0.1 sec
 ts = np.linspace(0,10,101)

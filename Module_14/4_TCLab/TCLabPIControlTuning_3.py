@@ -8,8 +8,8 @@ Kc = 5
 tauI = 120
 tauD = 0 # no derivative term
 
-print('Kc: ' + str(Kc))
-print('tauI: ' + str(tauI))
+print(f'Kc: {Kc}')
+print(f'tauI: {tauI}')
 
 #------------------------
 # PID Controller Function

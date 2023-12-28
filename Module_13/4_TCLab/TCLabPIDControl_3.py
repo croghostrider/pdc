@@ -16,9 +16,9 @@ Kc = (1/Kp)*(taup+0.5*thetap)/(tauc+0.5*thetap)
 tauI = taup + 0.5*thetap
 tauD = taup*thetap / (2*taup+thetap)
 
-print('Kc: ' + str(Kc))
-print('tauI: ' + str(tauI))
-print('tauD: ' + str(tauD))
+print(f'Kc: {str(Kc)}')
+print(f'tauI: {str(tauI)}')
+print(f'tauD: {str(tauD)}')
 
 #------------------------
 # PID Controller Function

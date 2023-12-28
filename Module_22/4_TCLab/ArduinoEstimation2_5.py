@@ -86,7 +86,7 @@ alpha2 = 0.0075    # Heat gain 2 (W/%)
 p0 = [U,alpha1,alpha2]
 
 # show initial objective
-print('Initial SSE Objective: ' + str(objective(p0)))
+print(f'Initial SSE Objective: {str(objective(p0))}')
 
 # optimize parameters
 # bounds on variables
@@ -95,15 +95,15 @@ solution = minimize(objective,p0,method='SLSQP',bounds=bnds)
 p = solution.x
 
 # show final objective
-print('Final SSE Objective: ' + str(objective(p)))
+print(f'Final SSE Objective: {str(objective(p))}')
 
 # optimized parameter values
 U = p[0]
 alpha1 = p[1]
 alpha2 = p[2]
-print('U: ' + str(U))
-print('alpha1: ' + str(alpha1))
-print('alpha2: ' + str(alpha2))
+print(f'U: {str(U)}')
+print(f'alpha1: {str(alpha1)}')
+print(f'alpha2: {str(alpha2)}')
 
 # calculate model with updated parameters
 Ti  = simulate(p0)
