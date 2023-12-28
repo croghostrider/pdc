@@ -283,9 +283,14 @@ class Window:
 
         m=GEKKO(remote=False)
 
-        q=float(self.q_copy.get());V=float(self.V_copy.get());Cp=float(self.Cp_copy.get())
-        EoverR=float(self.EoverR_copy.get());k0=float(self.k0_copy.get());UA=float(self.UA_copy.get());     
-        mdelH=float(self.mdelH_copy.get());rho=float(self.rho_copy.get());
+        q=float(self.q_copy.get())
+        V=float(self.V_copy.get())
+        Cp=float(self.Cp_copy.get())
+        EoverR=float(self.EoverR_copy.get())
+        k0=float(self.k0_copy.get())
+        UA=float(self.UA_copy.get());
+        mdelH=float(self.mdelH_copy.get())
+        rho=float(self.rho_copy.get());
         Tf=float(self.Tf_copy.get());
         Tc=float(self.u_ss_copy.get());
         Caf=float(self.Caf_copy.get());
@@ -303,7 +308,6 @@ class Window:
 
         self.Ca_ss_copy.set('%7.4f'%Ca_1.value[0])
         self.T_ss_copy.set('%7.4f'%T_1.value[0])
-        pass
 
     def graphStep(self,*args):
         # Steady State Initial Conditions for the States
@@ -393,7 +397,7 @@ class Window:
         # create linear interpolation of the u data versus time
         uf = interp1d(t,u1)
 
-        # define first-order plus dead-time approximation    
+        # define first-order plus dead-time approximation
         def fopdt(y,t,uf,Km,taum,thetam):
             # arguments
             #  y      = output
@@ -404,10 +408,7 @@ class Window:
             #  thetam = model time constant
             # time-shift u
             try:
-                if (t-thetam) <= 0:
-                    um = uf(0.0)
-                else:
-                    um = uf(t-thetam)
+                um = uf(0.0) if (t-thetam) <= 0 else uf(t-thetam)
             except:
                 #print('Error with time extrapolation: ' + str(t))
                 um = u0
@@ -450,7 +451,7 @@ class Window:
         x0[2] = 0.0 # thetam
 
         # show initial objective
-        print('Initial SSE Objective: ' + str(objective(x0)))
+        print(f'Initial SSE Objective: {str(objective(x0))}')
 
         # optimize Km, taum, thetam
         # bounds on variables
@@ -459,11 +460,11 @@ class Window:
         x = solution.x
 
         # show final objective
-        print('Final SSE Objective: ' + str(objective(x)))
+        print(f'Final SSE Objective: {str(objective(x))}')
 
-        print('Kp: ' + str(x[0]))
-        print('taup: ' + str(x[1]))
-        print('thetap: ' + str(x[2]))
+        print(f'Kp: {str(x[0])}')
+        print(f'taup: {str(x[1])}')
+        print(f'thetap: {str(x[2])}')
         self.Kp_copy.set('%4.2f'%x[0])
         self.Tp_copy.set('%4.2f'%x[1])
         self.Lp_copy.set('%4.2f'%x[2])
@@ -479,15 +480,15 @@ class Window:
 
         # design PI controller
 #       tauc = max(0.1*taup,0.8*thetap)
-        tauc = max(0.1*x[1],0.8*x[2])    
+        tauc = max(0.1*x[1],0.8*x[2])
         Kc = (1.0/x[0])*(x[1]/(x[2]+tauc))
         tauI = x[1]/8.0
         self.Kc_copy.set('%4.2f'%Kc)
         self.Ti_copy.set('%4.2f'%tauI)
         self.Td_copy.set(0.000012)
 
-        print('Kc: ' + str(Kc))
-        print('tauI: ' + str(tauI))
+        print(f'Kc: {str(Kc)}')
+        print(f'tauI: {str(tauI)}')
 
         # calculate model with updated parameters
         ym1 = sim_model(x0)
@@ -519,12 +520,16 @@ class Window:
 #        Kc=float(self.Esc1_copy.get());tauI=float(self.Ti_copy.get());tauD=float(self.Td_copy.get());     
 #        SP1=float(self.SP1_copy.get());SP2=float(self.SP2_copy.get());#self.Esc3=float(self.Esc3.get());     
 
-        self.Ca_ss=float(self.Ca_ss_copy.get());self.T_ss=float(self.T_ss_copy.get());self.u_ss=float(self.u_ss_copy.get())
-        self.Kc=float(self.Kc_copy.get());self.tauI=float(self.Ti_copy.get());self.tauD=float(self.Td_copy.get());     
-        self.SP1=float(self.SP1_copy.get());self.SP2=float(self.SP2_copy.get());#self.Esc3=float(self.Esc3.get());     
-
-        Tf=float(self.Tf_copy.get());Caf=float(self.Caf_copy.get());#self.Esc3=float(self.Esc3.get());     
-
+        self.Ca_ss=float(self.Ca_ss_copy.get())
+        self.T_ss=float(self.T_ss_copy.get())
+        self.u_ss=float(self.u_ss_copy.get())
+        self.Kc=float(self.Kc_copy.get())
+        self.tauI=float(self.Ti_copy.get())
+        self.tauD=float(self.Td_copy.get());
+        self.SP1=float(self.SP1_copy.get())
+        self.SP2=float(self.SP2_copy.get())
+        Tf=float(self.Tf_copy.get())
+        Caf=float(self.Caf_copy.get())
 #        print('type(Ca_ss)=',type(Ca_ss));print('type(T_ss)=',type(T_ss));print('type(u_ss)=',type(u_ss))
 #        print('type(Kc)=',type(Kc));print('type(tauI)=',type(tauI));print('type(tauD)=',type(tauD));
 #        print('type(SP1)=',type(SP1));print('type(SP2)=',type(SP2));print('type(Tf)=',type(Tf));
@@ -561,7 +566,7 @@ class Window:
         I = np.zeros(len(t))   # integral
         D = np.zeros(len(t))   # derivative
         sp = np.zeros(len(t))  # set point
-        sp[0:100] = self.SP1
+        sp[:100] = self.SP1
         sp[100:] = self.SP2
         #sp[150:] = 280.0
 
@@ -608,7 +613,7 @@ class Window:
         data = np.vstack((t,u,T)) # vertical stack
         data = data.T             # transpose data
         np.savetxt('data_doublet.txt',data,delimiter=',')
-            
+
         # Plot the results
         plt.figure()
         plt.subplot(3,1,1)

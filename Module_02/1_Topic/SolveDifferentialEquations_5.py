@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 def model(z,t):
     dxdt = 3.0 * np.exp(-t)
     dydt = -z[1] + 3
-    dzdt = [dxdt,dydt]
-    return dzdt
+    return [dxdt,dydt]
 
 # initial condition
 z0 = [0,0]

@@ -110,7 +110,7 @@ def heat(x,t,Q1,Q2,p):
 def simulate(tm,U,alpha1,alpha2):
     T = np.zeros((len(t),2))
     T[0,0] = T1meas[0]
-    T[0,1] = T2meas[0]    
+    T[0,1] = T2meas[0]
     T0 = T[0]
     p = (U,alpha1,alpha2)
     for i in range(len(t)-1):
@@ -119,7 +119,7 @@ def simulate(tm,U,alpha1,alpha2):
         T0 = y[-1]
         T[i+1] = T0
     z = np.empty((len(t)*2))
-    z[0:len(t)] = T[:,0]
+    z[:len(t)] = T[:,0]
     z[len(t):] = T[:,1]
     return z
 
@@ -143,7 +143,7 @@ pinit = [U,alpha1,alpha2]
 
 x = []
 y = np.empty((len(t)*2))
-y[0:len(t)] = T1meas
+y[:len(t)] = T1meas
 y[len(t):] = T2meas
 
 popt, pcov = curve_fit(simulate, x, y)
@@ -156,16 +156,16 @@ lpb1 = np.empty((len(t)))
 lpb2 = np.empty((len(t)))
 upb1 = np.empty((len(t)))
 upb2 = np.empty((len(t)))
-lpb1[0:len(t)] = lpb[0:len(t)]
-lpb2[0:len(t)] = lpb[len(t):]
-upb1[0:len(t)] = upb[0:len(t)]
-upb2[0:len(t)] = upb[len(t):]
+lpb1[:len(t)] = lpb[:len(t)]
+lpb2[:len(t)] = lpb[len(t):]
+upb1[:len(t)] = upb[:len(t)]
+upb2[:len(t)] = upb[len(t):]
 
 # optimized parameter values with uncertainties
 print('Optimal Parameters with Uncertanty Range')
-print('U: ' + str(Uu))
-print('alpha1: ' + str(alpha1u))
-print('alpha2: ' + str(alpha2u))
+print(f'U: {str(Uu)}')
+print(f'alpha1: {str(alpha1u)}')
+print(f'alpha2: {str(alpha2u)}')
 
 # calculate model with updated parameters
 Ti  = simulate2(pinit)

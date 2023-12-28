@@ -10,14 +10,7 @@ def mixer(x,t,Tf,Caf):
     # States (2):
     # Concentration of A (mol/L)
     Ca = x[0]
-    # Parameters:
-    # Volumetric Flowrate (m^3/hr)
-    q = 100
-    # Volume of CSTR (m^3)
-    V = 100
-    # Calculate concentration derivative
-    dCadt = q/V*(Caf - Ca)
-    return dCadt
+    return 1 * (Caf - Ca)
 
 # Initial Condition
 Ca0 = 0.0

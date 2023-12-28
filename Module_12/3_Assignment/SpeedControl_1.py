@@ -17,9 +17,7 @@ def vehicle(v,t,u,load):
     A = 5.0      # cross-sectional area (m^2)
     Fp = 30      # thrust parameter (N/%pedal)
     m = 500      # vehicle mass (kg)
-    # calculate derivative of the velocity
-    dv_dt = (1.0/(m+load)) * (Fp*u - 0.5*rho*Cd*A*v**2)
-    return dv_dt
+    return (1.0/(m+load)) * (Fp*u - 0.5*rho*Cd*A*v**2)
 
 tf = 60.0                 # final time for simulation
 nsteps = 61               # number of time steps
@@ -48,10 +46,8 @@ if animate:
 for i in range(nsteps-1):
     u = step[i]
     # clip inputs to -50% to 100%
-    if u >= 100.0:
-        u = 100.0
-    if u <= -50.0:
-        u = -50.0
+    u = min(u, 100.0)
+    u = max(u, -50.0)
     v = odeint(vehicle,v0,[0,delta_t],args=(u,load))
     v0 = v[-1]   # take the last value
     vs[i+1] = v0 # store the velocity for plotting
@@ -61,13 +57,13 @@ for i in range(nsteps-1):
     if animate:
         plt.clf()
         plt.subplot(2,1,1)
-        plt.plot(ts[0:i+1],vs[0:i+1],'b-',linewidth=3)
-        plt.plot(ts[0:i+1],sps[0:i+1],'k--',linewidth=2)
+        plt.plot(ts[:i+1], vs[:i+1], 'b-', linewidth=3)
+        plt.plot(ts[:i+1], sps[:i+1], 'k--', linewidth=2)
         plt.ylabel('Velocity (m/s)')
         plt.legend(['Velocity','Set Point'],loc=2)
         plt.subplot(2,1,2)
-        plt.plot(ts[0:i+1],step[0:i+1],'r--',linewidth=3)
-        plt.ylabel('Gas Pedal')    
+        plt.plot(ts[:i+1], step[:i+1], 'r--', linewidth=3)
+        plt.ylabel('Gas Pedal')
         plt.legend(['Gas Pedal (%)'])
         plt.xlabel('Time (sec)')
         plt.pause(0.1)    

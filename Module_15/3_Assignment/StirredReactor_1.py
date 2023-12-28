@@ -99,17 +99,17 @@ for i in range(len(t)-1):
         plt.clf()
         # Plot the results
         plt.subplot(3,1,1)
-        plt.plot(t[0:i+1],u[0:i+1],'b--',linewidth=3)
+        plt.plot(t[:i+1], u[:i+1], 'b--', linewidth=3)
         plt.ylabel('Cooling T (K)')
         plt.legend(['Jacket Temperature'],loc='best')
 
         plt.subplot(3,1,2)
-        plt.plot(t[0:i+1],Ca[0:i+1],'r-',linewidth=3)
+        plt.plot(t[:i+1], Ca[:i+1], 'r-', linewidth=3)
         plt.ylabel('Ca (mol/L)')
         plt.legend(['Reactor Concentration'],loc='best')
 
         plt.subplot(3,1,3)
-        plt.plot(t[0:i+1],T[0:i+1],'k.-',linewidth=3)
+        plt.plot(t[:i+1], T[:i+1], 'k.-', linewidth=3)
         plt.ylabel('T (K)')
         plt.xlabel('Time (min)')
         plt.legend(['Reactor Temperature'],loc='best')

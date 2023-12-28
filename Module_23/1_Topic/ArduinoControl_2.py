@@ -82,11 +82,9 @@ def heat(x,t,Q):
     # Temperature State 
     T = x[0]
 
-    # Nonlinear Energy Balance
-    dTdt = (1.0/(m*Cp))*(U*A*(Ta-T) \
-            + eps * sigma * A * (Ta**4 - T**4) \
-            + alpha*Q)
-    return dTdt
+    return (1.0 / (m * Cp)) * (
+        U * A * (Ta - T) + eps * sigma * A * (Ta**4 - T**4) + alpha * Q
+    )
 
 ######################################################
 # Do not adjust anything below this point            #
@@ -108,7 +106,7 @@ tm = np.zeros(loops)
 
 # Temperature
 # set point (degC)
-Tsp1 = np.ones(loops) * 25.0 
+Tsp1 = np.ones(loops) * 25.0
 Tsp1[60:] = 50.0
 Tsp1[360:] = 30.0
 Tsp1[660:] = 40.0
@@ -146,9 +144,9 @@ prev_time = start_time
 # Integral error
 ierr = 0.0
 try:
+    # Sleep time
+    sleep_max = 1.0
     for i in range(1,loops):
-        # Sleep time
-        sleep_max = 1.0
         sleep = sleep_max - (time.time() - prev_time)
         if sleep>=0.01:
             time.sleep(sleep-0.01)
@@ -198,27 +196,27 @@ try:
         plt.clf()
         ax=plt.subplot(4,1,1)
         ax.grid()
-        plt.plot(tm[0:i],T1[0:i],'r.',label=r'$T_1$ measured')
-        plt.plot(tm[0:i],Tsp1[0:i],'k--',label=r'$T_1$ set point')
+        plt.plot(tm[:i], T1[:i], 'r.', label=r'$T_1$ measured')
+        plt.plot(tm[:i], Tsp1[:i], 'k--', label=r'$T_1$ set point')
         plt.ylabel('Temperature (degC)')
         plt.legend(loc=2)
         ax=plt.subplot(4,1,2)
         ax.grid()
-        plt.plot(tm[0:i],Q1[0:i],'b-',label=r'$Q_1$')
+        plt.plot(tm[:i], Q1[:i], 'b-', label=r'$Q_1$')
         plt.ylabel('Heater')
         plt.legend(loc='best')
         ax=plt.subplot(4,1,3)
         ax.grid()
-        plt.plot(tm[0:i],T1[0:i],'r.',label=r'$T_1$ measured')
-        plt.plot(tm[0:i],Tp[0:i],'k-',label=r'$T_1$ energy balance')
-        plt.plot(tm[0:i],Tpl[0:i],'g-',label=r'$T_1$ linear model')
+        plt.plot(tm[:i], T1[:i], 'r.', label=r'$T_1$ measured')
+        plt.plot(tm[:i], Tp[:i], 'k-', label=r'$T_1$ energy balance')
+        plt.plot(tm[:i], Tpl[:i], 'g-', label=r'$T_1$ linear model')
         plt.ylabel('Temperature (degC)')
         plt.legend(loc=2)
         ax=plt.subplot(4,1,4)
         ax.grid()
-        plt.plot(tm[0:i],error_sp[0:i],'r-',label='Set Point Error')
-        plt.plot(tm[0:i],error_eb[0:i],'k-',label='Energy Balance Error')
-        plt.plot(tm[0:i],error_fopdt[0:i],'g-',label='Linear Model Error')
+        plt.plot(tm[:i], error_sp[:i], 'r-', label='Set Point Error')
+        plt.plot(tm[:i], error_eb[:i], 'k-', label='Energy Balance Error')
+        plt.plot(tm[:i], error_fopdt[:i], 'g-', label='Linear Model Error')
         plt.ylabel('Cumulative Error')
         plt.legend(loc='best')
         plt.xlabel('Time (sec)')
@@ -231,7 +229,6 @@ try:
     # Save figure
     plt.savefig('test_PID.png')
 
-# Allow user to end loop with Ctrl-C           
 except KeyboardInterrupt:
     # Disconnect from Arduino
     a.Q1(0)
@@ -240,7 +237,6 @@ except KeyboardInterrupt:
     a.close()
     plt.savefig('test_PID.png')
 
-# Make sure serial connection still closes when there's an error
 except:           
     # Disconnect from Arduino
     a.Q1(0)

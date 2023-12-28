@@ -21,8 +21,8 @@ alpha1 = m.FV(value=0.01,lb=0.003,ub=0.03)  # W / % heater
 alpha2 = m.FV(value=0.005,lb=0.002,ub=0.02) # W / % heater
 
 # STATUS=1 allows solver to adjust parameter
-U.STATUS = 1  
-alpha1.STATUS = 1 
+U.STATUS = 1
+alpha1.STATUS = 1
 alpha2.STATUS = 1 
 
 # Measured inputs
@@ -72,9 +72,9 @@ m.options.SOLVER  = 3 # IPOPT
 m.solve(disp=True)
 
 # Parameter values
-print('U     : ' + str(U.value[0]))
-print('alpha1: ' + str(alpha1.value[0]))
-print('alpha2: ' + str(alpha2.value[0]))
+print(f'U     : {str(U.value[0])}')
+print(f'alpha1: {str(alpha1.value[0])}')
+print(f'alpha2: {str(alpha2.value[0])}')
 
 # Create plot
 plt.figure()

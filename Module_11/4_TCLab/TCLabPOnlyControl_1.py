@@ -14,8 +14,7 @@ taup = 175.0
 thetap = 15.0
 
 def process(y,t,u):
-    dydt = (1.0/taup) * (-(y-23.0) + Kp * u)
-    return dydt
+    return (1.0/taup) * (-(y-23.0) + Kp * u)
 
 def pidPlot(Kc):
     t = np.linspace(0,tf,n) # create time vector
@@ -51,8 +50,8 @@ def pidPlot(Kc):
     plt.plot(t,SP,'k-',linewidth=2,label='Setpoint (SP)')
     plt.plot(t,PV,'r:',linewidth=2,label='Temperature (PV)')
     plt.ylabel(r'T $(^oC)$')
-    plt.text(200,30,'Offset: ' + str(np.round(SP[-1]-PV[-1],2)))
-    plt.text(400,30,r'$K_c$: ' + str(np.round(Kc,0)))  
+    plt.text(200, 30, f'Offset: {str(np.round(SP[-1] - PV[-1], 2))}')
+    plt.text(400, 30, f'$K_c$: {str(np.round(Kc, 0))}')
     plt.legend(loc='best')
     plt.subplot(2,2,2)
     plt.plot(t,P,'g.-',linewidth=2,label=r'Proportional = $K_c \; e(t)$')

@@ -87,7 +87,7 @@ def objective(x):
     return sum(np.abs(T1p-T1)+np.abs(T2p-T2))
 
 # show initial objective
-print('Initial SSE Objective: ' + str(objective(x0)))
+print(f'Initial SSE Objective: {str(objective(x0))}')
 print('Optimizing Values...')
 
 # optimize without parameter constraints
@@ -101,21 +101,18 @@ solution = minimize(objective,x0,bounds=bnds,method='SLSQP')
 x = solution.x
 iae = objective(x)
 Kp,Kd,taup,thetap = x
-print('Final SSE Objective: ' + str(objective(x)))
-print('Kp: ' + str(Kp))
-print('Kd: ' + str(Kd))
-print('taup: ' + str(taup))
-print('thetap: ' + str(thetap))
-# save fopdt.txt file
-fid = open('fopdt.txt','w')
-fid.write(str(Kp)+'\n')
-fid.write(str(Kd)+'\n')
-fid.write(str(taup)+'\n')
-fid.write(str(thetap)+'\n')
-fid.write(str(T1_0)+'\n')
-fid.write(str(T2_0)+'\n')
-fid.close()
-
+print(f'Final SSE Objective: {str(objective(x))}')
+print(f'Kp: {str(Kp)}')
+print(f'Kd: {str(Kd)}')
+print(f'taup: {str(taup)}')
+print(f'thetap: {str(thetap)}')
+with open('fopdt.txt','w') as fid:
+    fid.write(str(Kp)+'\n')
+    fid.write(str(Kd)+'\n')
+    fid.write(str(taup)+'\n')
+    fid.write(str(thetap)+'\n')
+    fid.write(str(T1_0)+'\n')
+    fid.write(str(T2_0)+'\n')
 # calculate model with updated parameters
 T1p,T2p = sim_model(x)
 
@@ -126,11 +123,11 @@ plt.plot(t,T2,'b.',linewidth=2,label='Temperature 2 (meas)')
 plt.plot(t,T1p,'r--',linewidth=2,label='Temperature 1 (pred)')
 plt.plot(t,T2p,'b--',linewidth=2,label='Temperature 2 (pred)')
 plt.ylabel(r'T $(^oC)$')
-plt.text(200,20,'Integral Abs Error: ' + str(np.round(iae,2)))
-plt.text(400,35,r'$K_p$: ' + str(np.round(Kp,2)))  
-plt.text(400,30,r'$K_d$: ' + str(np.round(Kd,2)))  
-plt.text(400,25,r'$\tau_p$: ' + str(np.round(taup,1)) + ' sec')  
-plt.text(400,20,r'$\theta_p$: ' + str(np.round(thetap,1)) + ' sec')  
+plt.text(200, 20, f'Integral Abs Error: {str(np.round(iae, 2))}')
+plt.text(400, 35, f'$K_p$: {str(np.round(Kp, 2))}')
+plt.text(400, 30, f'$K_d$: {str(np.round(Kd, 2))}')
+plt.text(400,25,r'$\tau_p$: ' + str(np.round(taup,1)) + ' sec')
+plt.text(400,20,r'$\theta_p$: ' + str(np.round(thetap,1)) + ' sec')
 plt.legend(loc=2)
 plt.subplot(2,1,2)
 plt.plot(t,Q1,'b--',linewidth=2,label=r'Heater 1 ($Q_1$)')

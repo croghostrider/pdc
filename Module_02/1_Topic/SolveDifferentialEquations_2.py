@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 
 # function that returns dy/dt
 def model(y,t,k):
-    dydt = -k * y
-    return dydt
+    return -k * y
 
 # initial condition
 y0 = 5

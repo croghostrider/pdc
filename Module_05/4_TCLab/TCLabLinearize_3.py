@@ -11,7 +11,7 @@ try:
     lab = tclab.TCLab()
     T1 = [lab.T1]
     lab.Q1(75)
-    for i in range(n):
+    for _ in range(n):
         time.sleep(1)
         print(lab.T1)
         T1.append(lab.T1)
@@ -28,7 +28,7 @@ alpha = 0.01
 eps = 0.9
 sigma = 5.67e-8
 Ta = 23
-Cp = 500 
+Cp = 500
 m = 0.004
 Q = 75
 TaK = Ta + 273.15

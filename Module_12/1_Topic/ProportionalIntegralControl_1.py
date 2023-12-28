@@ -30,10 +30,7 @@ sp[600:] = 0
 pid.sp = sp
 
 def process(y,t,u,Kp,taup):
-    # Kp = process gain
-    # taup = process time constant
-    dydt = -y/taup + Kp/taup * u
-    return dydt
+    return -y/taup + Kp/taup * u
 
 def calc_response(t,mode,xm,xc):
     # t = time points

@@ -40,11 +40,9 @@ def heat(x,t,Q,p):
     # Temperature State 
     T = x[0]
 
-    # Nonlinear Energy Balance
-    dTdt = (1.0/(m*Cp))*(U*A*(Ta-T) \
-            + eps * sigma * A * (Ta**4 - T**4) \
-            + alpha*Q)
-    return dTdt
+    return (1.0 / (m * Cp)) * (
+        U * A * (Ta - T) + eps * sigma * A * (Ta**4 - T**4) + alpha * Q
+    )
 
 def calc_T(p):
     T = np.ones(len(t)) * Tmeas0
@@ -73,7 +71,7 @@ alpha = 0.01      # Heat gain (W/%)
 p0 = [U,alpha]
 
 # show initial objective
-print('Initial SSE Objective: ' + str(objective(p0)))
+print(f'Initial SSE Objective: {str(objective(p0))}')
 
 # optimize parameters
 # bounds on variables
@@ -82,13 +80,13 @@ solution = minimize(objective,p0,method='SLSQP',bounds=bnds)
 p = solution.x
 
 # show final objective
-print('Final SSE Objective: ' + str(objective(p)))
+print(f'Final SSE Objective: {str(objective(p))}')
 
 # optimized parameter values
 U = p[0]
 alpha = p[1]
-print('U: ' + str(U))
-print('alpha: ' + str(alpha))
+print(f'U: {str(U)}')
+print(f'alpha: {str(alpha)}')
 
 # Known Parameters
 m = 4.0/1000.0     # kg
@@ -106,8 +104,8 @@ dfdT = -(U*A-4.0*eps*sigma*A*T0**3)/(m*Cp)
 dfdQ = alpha/(m*Cp)
 taup = -1.0/dfdT
 Kp = dfdQ * taup
-print('Kp: ' + str(Kp))
-print('taup: ' + str(taup))
+print(f'Kp: {str(Kp)}')
+print(f'taup: {str(taup)}')
 
 # calculate model with updated parameters
 T1 = calc_T(p0)

@@ -4,14 +4,9 @@ import matplotlib.pyplot as plt
 
 m = GEKKO()
 u = m.FV(0.1)   # social distancing (0-1)
-         # 0   = no social distancing
-         # 0.1 = masks
-         # 0.2 = masks and hybrid classes
-         # 0.3 = masks, hybrid, and online classes
-
-t_incubation = 5.1 
-t_infective = 3.3 
-R0 = 2.4 
+t_incubation = 5.1
+t_infective = 3.3
+R0 = 2.4
 N = 33517 
 
 # initial number of infected and recovered individuals
@@ -45,7 +40,7 @@ m.solve(disp=False)
 # plot the data
 plt.figure(figsize=(8,5))
 plt.subplot(2,1,1)
-plt.title('Social Distancing = '+str(u.value[0]*100)+'%')
+plt.title(f'Social Distancing = {str(u.value[0] * 100)}%')
 plt.plot(m.time, s.value, color='blue', lw=3, label='Susceptible')
 plt.plot(m.time, r.value, color='red',  lw=3, label='Recovered')
 plt.ylabel('Fraction')

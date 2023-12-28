@@ -11,7 +11,7 @@ tm = np.linspace(0,n,n+1) # Time values
 lab = tclab.TCLab()
 T1 = [lab.T1]
 lab.Q1(50)
-for i in range(n):
+for _ in range(n):
     time.sleep(1.0)
     print(lab.T1)
     T1.append(lab.T1)
@@ -21,12 +21,11 @@ lab.close()
 def labsim(TC,t):
     U = 10.0
     A = 0.0012
-    Cp = 500 
+    Cp = 500
     m = 0.004
     alpha = 0.01
     Ta = 23
-    dTCdt = (U*A*(Ta-TC) + alpha*50)/(m*Cp)
-    return dTCdt
+    return (U*A*(Ta-TC) + alpha*50)/(m*Cp)
 Tsim = odeint(labsim,23,tm)
 
 # Plot results
